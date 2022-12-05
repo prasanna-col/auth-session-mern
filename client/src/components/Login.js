@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import validator from 'validator'
 import { regexPassword } from '../utils'
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../Context'
 
 import {
   Paper,
@@ -29,10 +30,12 @@ import {
 } from '@mui/icons-material'
 import theme from '../styles/theme'
 
-function Login({}) {
+function Login({ }) {
+
+  const { setUserEmail } = useContext(UserContext)
 
   let navigate = useNavigate();
-  
+
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -91,8 +94,12 @@ function Login({}) {
       }
 
       const data = await res.json()
-      // console.log({ data })
-      await navigate('/home');
+      await setUserEmail(data?.userSession?.email)
+      console.log({ data })
+      if (data.msg == "You have logged in successfully") {
+        navigate('/home');
+      }
+
       // this is just a visual feedback for user for this demo
       // this will not be an error, rather we will show a different UI or redirect user to dashboard
       setErrors({

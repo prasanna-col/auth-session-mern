@@ -1,16 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { UserContext } from "../App"
+import React, { useContext } from 'react'
+import { UserContext } from "../Context"
 
-function Home({}) {
-    const userContext = useContext(UserContext)
+function Home() {
 
-    useEffect(()=>{
-        console.log("Home")
-    },[])
+  const { userEmail } = useContext(UserContext)
 
   return (
     <>
-     Welcome {userContext.email}
+      Welcome {userEmail}
     </>
   )
 }

@@ -4,10 +4,10 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
 
-import { UserContext } from './App'
+import { UserContext } from './Context'
+
 
 const ProtectedRoute = ({ user, redirectPath = "" }) => {
-  console.log("user data", user)
   if (!user) {
     // return <Navigate to={redirectPath} replace />
     return <>Being refresh...</>
@@ -15,26 +15,19 @@ const ProtectedRoute = ({ user, redirectPath = "" }) => {
   return <Outlet />
 }
 function RoutesComp() {
-  const userContext = useContext(UserContext)
+  const { userEmail } = useContext(UserContext)
+
   return (
     <>
       <Routes>
-        {/* {userContext?.email && (
-          <Route path='/home' element={<Home />} />
-        )}
-        {!userContext?.email && (
-          <>
-            <Route path='/' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-          </>
-        )} */}
 
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
 
-        <Route element={<ProtectedRoute user={userContext?.email} />}>
+        <Route element={<ProtectedRoute user={userEmail} redirectPath={""} />}>
           <Route path='/home' element={<Home />} />
         </Route>
+
       </Routes>
     </>
   )

@@ -8,7 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session) // add this pac
 const loginRouter = require('./routes/loginRoutes')
 
 const app = express()
-const MAX_AGE = 10000 // 30 sec    // 1000 * 60 *1 // 3hrs // 
+const MAX_AGE = 30000 // 30 sec    // 1000 * 60 *1 // 3hrs // 
 const port = process.env.PORT || 5000
 
 const corsOptions = {
