@@ -1,1 +1,2 @@
-# Session Auth boilerplate with MERN stack
+# auth-session-mern
+Session workflow with Login, register and home screens
