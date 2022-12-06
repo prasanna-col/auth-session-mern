@@ -29,6 +29,7 @@ import theme from '../styles/theme'
 
 function Signup() {
   const [values, setValues] = useState({
+    username: "",
     email: '',
     password: '',
     repeatPassword: '',
@@ -37,6 +38,7 @@ function Signup() {
   })
   const [errors, setErrors] = useState({
     email: false,
+    username: false,
     password: false,
     repeatPassword: false,
     fetchError: false,
@@ -50,6 +52,12 @@ function Signup() {
         validator.isEmail(currValue)
           ? setErrors({ ...errors, email: false })
           : setErrors({ ...errors, email: true })
+        break
+
+      case 'username':
+        currValue.length > 2
+          ? setErrors({ ...errors, username: false })
+          : setErrors({ ...errors, username: true })
         break
 
       case 'password':
@@ -77,16 +85,20 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    var bodyData = {
+      email: values.email,
+      password: values.password,
+      username: values.username
+    }
+
+    console.log("bodyData", bodyData)
     try {
       const res = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
+        body: JSON.stringify(bodyData),
       })
 
       if (!res.ok) {
@@ -107,13 +119,14 @@ function Signup() {
         fetchError: true,
         fetchErrorMsg: data.msg,
       })
-      setValues({
-        email: '',
-        password: '',
-        repeatPassword: '',
-        showPassword: false,
-        showRepeatPassword: false,
-      })
+      // setValues({
+      //   username: "",
+      //   email: '',
+      //   password: '',
+      //   repeatPassword: '',
+      //   showPassword: false,
+      //   showRepeatPassword: false,
+      // })
       return
     } catch (error) {
       setErrors({
@@ -155,6 +168,17 @@ function Signup() {
             noValidate
             spacing={6}
             sx={{ bgcolor: '#f5f5f6', padding: '40px' }}>
+
+            <TextField
+              variant='filled'
+              type='text'
+              label='User name'
+              value={values.username}
+              onChange={handleChange('username')}
+              error={errors.username}
+              helperText={errors.username && 'Please enter your name'}
+            />
+
             <TextField
               variant='filled'
               type='email'

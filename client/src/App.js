@@ -9,12 +9,15 @@ import { UserContextProvider } from './Context'
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [userSession, setUserSession] = useState(true)
-  const [userEmail, setUserEmail] = useState(true)
+  const [userSession, setUserSession] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [userId, setUserId] = useState("")
+
 
   const ContextValues = {
     userSession, setUserSession,
-    userEmail, setUserEmail
+    userEmail, setUserEmail,
+    userId, setUserId
   }
 
   let navigate = useNavigate();
@@ -25,13 +28,14 @@ function App() {
         setLoading(true)
         const res = await fetch('/api/isAuth')
         if (!res.ok) {
-          console.log("res", res)
+          localStorage.clear();
           navigate('/');
           return setLoading(false)
         }
 
         setUserSession(await res.json())
-        await console.log("userSession", userSession)
+        setUserEmail(localStorage.getItem('loggedEmail'))
+        setUserId(localStorage.getItem('loggedUserId'))
         setLoading(false)
       } catch (error) {
         setLoading(false)

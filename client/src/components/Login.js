@@ -32,7 +32,7 @@ import theme from '../styles/theme'
 
 function Login({ }) {
 
-  const { setUserEmail } = useContext(UserContext)
+  const { setUserEmail, setUserId } = useContext(UserContext)
 
   let navigate = useNavigate();
 
@@ -94,8 +94,13 @@ function Login({ }) {
       }
 
       const data = await res.json()
+      localStorage.setItem('loggedEmail', data?.userSession?.email);
+      localStorage.setItem('loggedUserId', data?.userSession?.user_id);
+
       await setUserEmail(data?.userSession?.email)
+      await setUserId(data?.userSession?.user_id)
       console.log({ data })
+
       if (data.msg == "You have logged in successfully") {
         navigate('/home');
       }
